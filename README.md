@@ -1,46 +1,86 @@
-# EduTrack - Student Management System
+# EduTrack – Student Module
+This repository contains the Student Module of the EduTrack project.
+The module is used to manage student records in the system. It allows users to view, add, edit, and delete student information through a simple web interface.
+The system follows a basic full-stack structure, where the backend handles the application logic, the database stores student information, and the frontend displays the data in the browser.
 
-## Introduction
-EduTrack is a simple web app to manage students. You can see all students, add new ones and edit details.
+## Scenario
+The Student Module manages student information in the EduTrack system.
+It performs basic operations on student data such as:
+• Viewing student records
+• Adding new students
+• Editing existing student details
+• Deleting student records
+These operations help maintain and organize student information efficiently.
 
-Tech used: Spring Boot backend, Angular frontend, MySQL database.
+## 1️⃣ Student Records
+The student module stores and manages information related to students.
+Each student record contains details such as:
+```
+• Student ID
+• Student Name
+• Email Address
+• Grade
+```
+The system displays these details in a student list table.
 
-## Features
-- View student list
-- Add student
-- Edit student
-- Data saved in database
+## 2️⃣ Backend
+The backend application manages the internal logic of the student module.
+It is responsible for:
+```
+• Processing student data
+• Handling requests from the frontend
+• Communicating with the database
+• Returning responses to the user interface
+```
 
-## What you need
-- MySQL installed
-- Java 21
-- Node.js
-- VS Code
+## 3️⃣ Frontend
+The frontend interface displays the student information to the user.
+It provides options to:
+```
+• View the student list
+• Add new students
+• Edit student information
+• Delete student records
+```
+The frontend sends requests to the backend and displays the data in the browser.
 
-## How to run
-1. Run mysql_auto_setup.bat to setup database. It creates edutrack3 database and table.
-2. Open terminal in backend folder: mvn spring-boot:run
-3. Open terminal in frontend folder: ng serve
-4. Go to http://localhost:4200
+## 4️⃣ Database
+The database stores all student records used in the module.
+It ensures that student information is stored securely and can be retrieved whenever required.
 
-Backend runs on port 8080, frontend on 4200.
+## 5️⃣ Application Output
+The application displays a Student Management page where users can view and manage student records.
+The page includes:
+```
+• Student List table
+• Add Student option
+• Edit and Delete actions for each student
+```
 
-## Folder structure
-- backend: Java code and API
-- frontend: Website code
-- db: Database file schema.sql
-- mysql bat files: For database setup
-
-## API
-- GET /students: Get list
-- POST /students: Add student
-
-## Development
-Edit code in backend or frontend folders. Run mvn or ng serve again.
-
-If MySQL error, check password.
-
-## Conclusion
-EduTrack is ready to use. Enjoy!
-
-
+## 6️⃣ Project Structure
+```
+Edutrack-student-module
+│
+├── backend
+│   ├── controller
+│   │   └── StudentController
+│   ├── service
+│   │   └── StudentService
+│   ├── repository
+│   │   └── StudentRepository
+│   ├── model
+│   │   └── Student
+│   └── resources
+│       └── application.properties
+│
+├── frontend
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+│
+├── db
+│   └── database scripts
+│
+└── README.md
+```
+The project is divided into backend, frontend, and database components to keep the system organized.
