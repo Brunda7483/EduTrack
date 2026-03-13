@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduTrack - Students</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+    nav { margin-bottom: 20px; }
+    nav a { margin-right: 10px; padding: 10px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; }
+    nav a:hover { background: #0056b3; }
+    h1, h2 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    button { padding: 5px 10px; margin-right: 5px; border: none; border-radius: 4px; cursor: pointer; }
+    .delete { background: #dc3545; color: white; }
+    .edit { background: #ffc107; color: black; }
+    .form-container { max-width: 400px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9; margin: 20px 0; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+    .buttons { display: flex; gap: 10px; }
+    .btn-primary { background: #28a745; color: white; padding: 10px 20px; }
+    .btn-cancel { background: #6c757d; color: white; padding: 10px 20px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>EduTrack - Student Management</h1>
+  <nav>
+    <a href="#" onclick="showSection('list')">Student List</a>
+    <a href="#" onclick="showSection('form')">Add Student</a>
+  </nav>
+
+  <!-- Student List -->
+  <section id="list">
+    <h2>Students</h2>
+    <button onclick="showSection('form')">Add New Student</button>
+    <table id="studentTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Grade</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="studentBody">
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Add Student Form -->
+  <section id="form" class="hidden">
+    <div class="form-container">
+      <h2>Add Student</h2>
+      <form id="studentForm">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" required minlength="2">
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label for="grade">Grade:</label>
+          <input type="text" id="grade">
+        </div>
+        <div class="buttons">
+          <button type="submit" class="btn-primary">Add Student</button>
+          <button type="button" class="btn-cancel" onclick="showSection('list')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    let students = [
+      {"id":1,"name":"John Doe","email":"john@example.com","grade":"A"},
+      {"id":2,"name":"Jane Smith","email":"jane@example.com","grade":"B"}
+    ];
+
+    function renderStudents() {
+      const tbody = document.getElementById('studentBody');
+      tbody.innerHTML = '';
+      students.forEach(student => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${student.id}</td>
+          <td>${student.name}</td>
+          <td>${student.email}</td>
+          <td>${student.grade}</td>
+          <td>
+            <button onclick="editStudent(${student.id})" class="edit">Edit</button>
+            <button onclick="deleteStudent(${student.id})" class="delete">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function showSection(section) {
+      document.getElementById('list').classList.toggle('hidden', section !== 'list');
+      document.getElementById('form').classList.toggle('hidden', section !== 'form');
+    }
+
+    function addStudent(name, email, grade) {
+      const newId = students.length ? Math.max(...students.map(s => s.id)) + 1 : 1;
+      students.push({id: newId, name, email, grade: grade || ''});
+      renderStudents();
+    }
+
+    function deleteStudent(id) {
+      if (confirm('Delete this student?')) {
+        students = students.filter(s => s.id !== id);
+        renderStudents();
+      }
+    }
+
+    function editStudent(id) {
+      const student = students.find(s => s.id === id);
+      if (student) {
+        const name = prompt('Name:', student.name);
+        const email = prompt('Email:', student.email);
+        const grade = prompt('Grade:', student.grade);
+        if (name && email) {
+          student.name = name;
+          student.email = email;
+          student.grade = grade || '';
+          renderStudents();
+        }
+      }
+    }
+
+    document.getElementById('studentForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const grade = document.getElementById('grade').value;
+      addStudent(name, email, grade);
+      document.getElementById('studentForm').reset();
+      showSection('list');
+    });
+
+    // Initial render
+    renderStudents();
+    showSection('list');
+  </script>
+</body>
+</html>
