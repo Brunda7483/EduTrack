@@ -1,0 +1,5 @@
+com\edutrack\controller\StudentController.class
+com\edutrack\entity\Student.class
+com\edutrack\EdutrackApplication.class
+com\edutrack\repository\StudentRepository.class
+com\edutrack\entity\Student_fixed.class
