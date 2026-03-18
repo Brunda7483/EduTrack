@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EduTrack Auth</title>
+<style>
+body {
+    font-family: Arial;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 300px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+h2 {
+    text-align: center;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #5a67d8;
+}
+
+.toggle {
+    text-align: center;
+    margin-top: 10px;
+    color: blue;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LOGIN -->
+    <div id="loginForm">
+        <h2>Login</h2>
+        <input id="loginEmail" placeholder="Email">
+        <input id="loginPassword" type="password" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+
+        <p class="toggle" onclick="showRegister()">
+            Don't have an account? Register
+        </p>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="registerForm" class="hidden">
+        <h2>Register</h2>
+        <input id="name" placeholder="Name">
+        <input id="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Password">
+
+        <select id="role">
+            <option value="ADMIN">ADMIN</option>
+            <option value="STUDENT">STUDENT</option>
+        </select>
+
+        <button onclick="register()">Register</button>
+
+        <p class="toggle" onclick="showLogin()">
+            Already have an account? Login
+        </p>
+    </div>
+
+    <p id="msg"></p>
+
+</div>
+
+<script>
+
+// Toggle forms
+function showRegister() {
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("registerForm").classList.remove("hidden");
+}
+
+function showLogin() {
+    document.getElementById("registerForm").classList.add("hidden");
+    document.getElementById("loginForm").classList.remove("hidden");
+}
+
+// Register API
+function register() {
+    fetch("http://localhost:8080/auth/register", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            role: document.getElementById("role").value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("msg").innerText = "Registered Successfully!";
+        showLogin();
+    });
+}
+
+// Login API
+function login() {
+    fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            email: document.getElementById("loginEmail").value,
+            password: document.getElementById("loginPassword").value
+        })
+    })
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById("msg").innerText = data;
+
+        if(data === "Login Successful"){
+            window.location.href = "dashboard.html";
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>
